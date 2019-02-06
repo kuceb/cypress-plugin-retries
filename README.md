@@ -10,6 +10,8 @@
 
 :warning: this module is in beta, and might cause some strange failures. please report any bugs in the issues
 
+![](docs/readme-screenshot.png)
+
 ### Quick Start
 
 Add the plugin to `devDependencies`
