@@ -8,9 +8,9 @@
 
 </div>
 
-:warning: this module is in beta, and might cause some strange failures. please report any bugs in the issues
+> :warning: this module is in beta, and might cause some strange failures. please report any bugs in the issues
 
-[please refer to this issue for updates about official cypress retry support](https://github.com/cypress-io/cypress/issues/1313)
+> [please refer to this issue for updates about official cypress retry support](https://github.com/cypress-io/cypress/issues/1313)
 
 ![](docs/readme-screenshot.png)
 
