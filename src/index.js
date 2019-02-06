@@ -1,23 +1,26 @@
 if (Cypress.env('RETRIES')) {
   const MAX_RETRIES = +Cypress.env('RETRIES')
 
-  let failHandler = () => {}
+  const normalFail = err => {
+    throw err
+  }
+
+  let failHandler = normalFail
 
   const removeSkipFail = err => {
-    setTimeout(() => {
-      const el = [].slice
+    requestAnimationFrame(() => {
+      try {
+        const el = [].slice
         .call(
           window.top.document.querySelectorAll('.test.runnable.runnable-passed')
         )
         .slice(-1)[0].nextSibling
-      el.remove()
-    }, 1)
+        el.remove()
+      } catch(e){}
+    })
     throw err
   }
 
-  const normalFail = err => {
-    throw err
-  }
 
   let currentRetry = 0
   let shouldSkipTest = false
@@ -45,6 +48,7 @@ if (Cypress.env('RETRIES')) {
 
     _beforeEach(...args)
   }
+
   window.it = (testName, testFn) => {
     if (!testFn) {
       _it(testName)
@@ -102,7 +106,7 @@ if (Cypress.env('RETRIES')) {
     }, 10)
   }
 
-  addGlobalStyle(`
+  addGlobalStyle(/*css*/`
 	.runnable.runnable-pending > .runnable-wrapper .runnable-state.runnable-retried {
 		color: orange
 	}
@@ -112,7 +116,6 @@ if (Cypress.env('RETRIES')) {
 	.runnable.runnable-pending > .runnable-wrapper .runnable-state.runnable-retried:before {
 		content: ""
 	}
-	
 	`)
 
   function addGlobalStyle(css) {

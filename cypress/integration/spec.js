@@ -3,6 +3,24 @@
 window.foo = 0
 window.foo2 = 0
 
+Cypress.config('defaultCommandTimeout', 100)
+
+describe('before hook', ()=>{
+  before(()=>{
+    window.beforeHook = window.beforeHook++ || 0
+    if (window.beforeHook < 1) {
+      // cy.get('fail')
+      expect(false).ok
+    }
+  })
+  it('fail once, skip rest', ()=>{
+
+  })
+  it('all skipped', ()=>{
+
+  })
+})
+
 describe('page', function() {
   // this.retries(10)
 
