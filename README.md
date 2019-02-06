@@ -4,7 +4,7 @@
     <img src="docs/readme-logo.png">
     <h1>cypress-plugin-retries</h1>
 
-<p>A Cypress plugin to retry failed tests. Uses environment variable <code>CYPRESS_RETRIES</code> to set the number of retries.</p>
+<p>A Cypress plugin to retry failed tests</p>
 
 </div>
 
