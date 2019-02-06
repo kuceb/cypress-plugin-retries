@@ -1,0 +1,17 @@
+{
+  "name": "cypress-plugin-retries",
+  "version": "1.0.0",
+  "description": "Cypress plugin allowing tests to retry a configurable amount of times",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cypress",
+    "plugin",
+    "retry"
+  ],
+  "repository": {"type": "git", "url": ""},
+  "author": "Ben Kucera",
+  "license": "MIT"
+}
