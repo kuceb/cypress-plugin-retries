@@ -29,6 +29,7 @@ if (Cypress.env('RETRIES')) {
     const beforeEachFn = args[0]
     args[0] = function() {
       if (shouldSkipBefore) return
+      if (shouldSkipTest) return
 
       failHandler = err => {
         if (currentRetry === MAX_RETRIES) {
@@ -39,7 +40,7 @@ if (Cypress.env('RETRIES')) {
         shouldSkipTest = true
         markPrevAsRetry()
       }
-      beforeEachFn()
+      beforeEachFn.apply(this)
     }
 
     _beforeEach(...args)
@@ -53,7 +54,6 @@ if (Cypress.env('RETRIES')) {
       .fill()
       .map((x, i) => {
         _it(`${testName} ${i ? `(retry ${i})` : ''}`, function() {
-          console.log(testName + ':' + i, 'currentRetry:', currentRetry)
           if (i === MAX_RETRIES) {
             shouldSkipBefore = false
           }
@@ -77,10 +77,9 @@ if (Cypress.env('RETRIES')) {
             this.skip()
           }
 
-          testFn()
+          testFn.apply(this)
           shouldSkipBefore = true
           currentRetry = 0
-          console.log('pass:' + testName + ':on:' + i)
         })
       })
   }
