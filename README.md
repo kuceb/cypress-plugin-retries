@@ -2,13 +2,13 @@
 
 <div align="center">
     <img src="docs/readme-logo.png">
-    <h1>cypress-plugin-retries</h1>
+    <h1>cypress-plugin-retries [beta]</h1>
 
 <p>A Cypress plugin to retry failed tests</p>
 
 </div>
 
-
+:warning: this module is in beta, and might cause some strange failures. please report any bugs in the issues
 
 ### Quick Start
 
