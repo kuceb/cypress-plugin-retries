@@ -3,7 +3,7 @@
 <div align="center">
     <img src="docs/readme-logo.png">
     <h1>cypress-plugin-retries <kbd>beta</kbd></h1>
-    <a href="https://www.npmjs.com/package/cypress-plugin-retry"><img src="https://img.shields.io/npm/v/cypress-plugin-retries.svg?style=flat"></a>
+    <a href="https://www.npmjs.com/package/cypress-plugin-retries"><img src="https://img.shields.io/npm/v/cypress-plugin-retries.svg?style=flat"></a>
 <p>A Cypress plugin to retry failed tests</p>
 
 </div>
