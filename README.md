@@ -8,35 +8,31 @@
 
 </div>
 
-> :warning: this module is in beta, and might cause some strange failures. please report any bugs in the issues
+> :warning: this module is in beta, and might cause some strange failures. Please report bugs in the issues of this repo.
 
 > [please refer to this issue for updates about official cypress retry support](https://github.com/cypress-io/cypress/issues/1313)
 
 ![](docs/readme-screenshot.png)
 
-### Quick Start
+### Installation
 
 Add the plugin to `devDependencies`
 ```bash
 npm install -D cypress-plugin-retries
 ```
 
-
 At the top of **`cypress/support/index.js`**:
 ```js
 require('cypress-plugin-retries')
 ```
+
+
+### Usage
 
 Use the environment variable `CYPRESS_RETRIES` to set the retry number:
 ```bash
 CYPRESS_RETRIES=3 npm run cypress
 ```
 
-Feel free to open issues!
-
-### Thanks to
-@debrisapron
-
-
 ### License
-MIT
+[MIT](LICENSE)
