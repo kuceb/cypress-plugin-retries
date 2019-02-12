@@ -2,7 +2,7 @@
 
 <div align="center">
     <img src="docs/readme-logo.png">
-    <h1>cypress-plugin-retries <kbd>beta</kbd></h1>
+    <h1>cypress-plugin-retries</h1>
     <a href="https://www.npmjs.com/package/cypress-plugin-retries"><img src="https://img.shields.io/npm/v/cypress-plugin-retries.svg?style=flat"></a>
     <a href="https://www.npmjs.com/package/cypress-plugin-retries"><img src="https://img.shields.io/npm/dt/cypress-plugin-retries.svg"></a>
     <a href="https://github.com/bkucera/cypress-plugin-retries/blob/master/LICENSE"><img src="https://img.shields.io/github/license/bkucera/cypress-plugin-retries.svg"></a>
@@ -11,9 +11,9 @@
 
 </div>
 
-> :warning: this module is in beta, and might cause some strange failures. Please report bugs in the issues of this repo.
+> **Please report bugs in the issues of this repo.**
 
-> Note: [please refer to this issue for updates about official cypress retry support](https://github.com/cypress-io/cypress/issues/1313)
+> [Please refer to this issue for updates about official cypress retry support](https://github.com/cypress-io/cypress/issues/1313)
 
 ![](docs/readme-screenshot.png)
 ![](2019-02-12-13-29-53.png)
