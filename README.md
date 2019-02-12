@@ -49,5 +49,11 @@ it('test', function() {
 })
 ```
 
+### How it works
+- tests only retry on failure. If all your tests pass on the first try, it's as if you didn't have this plugin.
+- only the final run of a test will be sent to the mocha reporter/Dashboard. his means if a test passes on the second retry, you'll see one passing test.
+- a screenshot is taken on each test retry. This can be configured as detailed here: https://docs.cypress.io/api/commands/screenshot.html#Test-Failures 
+- commands from past test tries will be faded out, as shown in the screenshot above
+
 ### License
 [MIT](LICENSE)
