@@ -10,9 +10,10 @@
 
 > :warning: this module is in beta, and might cause some strange failures. Please report bugs in the issues of this repo.
 
-> [please refer to this issue for updates about official cypress retry support](https://github.com/cypress-io/cypress/issues/1313)
+> Note: [please refer to this issue for updates about official cypress retry support](https://github.com/cypress-io/cypress/issues/1313)
 
 ![](docs/readme-screenshot.png)
+![](2019-02-12-13-29-53.png)
 
 ### Installation
 
@@ -31,7 +32,18 @@ require('cypress-plugin-retries')
 
 Use the environment variable `CYPRESS_RETRIES` to set the retry number:
 ```bash
-CYPRESS_RETRIES=3 npm run cypress
+CYPRESS_RETRIES=2 npm run cypress
+```
+**or** Use `Cypress.env('RETRIES')` in your spec file:
+```js
+Cypress.env('RETRIES', 2)
+```
+**or** Use `mocha`'s `this.retries(n)` inside of a test:
+> Note: **must use `function()` notation, not arrows `()=>{}`**
+```js
+it('test', function() {
+    this.retries(2)
+})
 ```
 
 ### License
