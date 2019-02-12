@@ -1,71 +1,102 @@
 /// <reference types="cypress"/>
 
 Cypress.config('defaultCommandTimeout', 100)
-const retryNum = 5
+const retryNum = 4
 Cypress.env('RETRIES', retryNum)
+Cypress.env('NO_FAIL', false)
 
-
-
-it('can log', ()=>{
-  cy.log('fooo').then(()=>{
-    Cypress.log({
-      name: 'FOOO'
-    })
-
-  })
-})
-
-
-describe.only('0', () => {
+describe('deeply nested', () => {
   const pushHook = name => {
     console.log(`%c${name}`, 'color:blue')
     expect(name).ok
     hooks.push(name)
   }
-  const hooks = []
+  let hooks = []
   let foo = 0
-  Cypress.on('fail', (err)=>{
+
+  const failUntil = num => {
+    if (Cypress.env('NO_FAIL')) {
+      return
+    }
+    if (num === true) {
+      expect(false).ok
+    }
+    if (foo <= num) {
+      cy.get('failOn' + foo)
+    }
+  }
+
+  cy.on('fail', err => {
     hooks.push('FAIL')
     // debugger
     throw err
   })
 
+  Cypress.env('RETRIES', 4)
   beforeEach(() => {
     pushHook('BE 0')
+    foo++
   })
   describe('1', () => {
+    before(() => {
+      pushHook('B 1')
+    })
     beforeEach(() => {
       pushHook('BE 1')
-      expect(++foo).gt(1)
+      failUntil(1)
     })
 
     describe('2', () => {
       beforeEach(() => {
         pushHook('BE 2')
-        expect(foo).gt(2)
+        failUntil(2)
       })
       beforeEach(() => {
         pushHook('BE 2 B')
-        // expect(false).ok
       })
       beforeEach(() => {
         pushHook('BE 2 C')
-        // expect(false).ok
       })
-      it('test', () => {
+      it('T 2', () => {
         pushHook('T 2')
-        expect('test body').ok
-        expect(foo).gt(3)
+        failUntil(3)
+        expect(hooks).deep.eq([
+          'B 1',
+          'BE 0',
+          'BE 1',
+          'BE 0',
+          'BE 1',
+          'BE 2',
+          'BE 0',
+          'BE 1',
+          'BE 2',
+          'BE 2 B',
+          'BE 2 C',
+          'T 2',
+          'AE 2',
+          'AE 1',
+          'AE 1 B',
+          'AE 0',
+          'BE 0',
+          'BE 1',
+          'BE 2',
+          'BE 2 B',
+          'BE 2 C',
+          'T 2'
+        ])
+        hooks = []
+      })
+
+      it('T 2 B', () => {
+        pushHook('T 2 B')
+        failUntil(4)
       })
       afterEach(function() {
-        // debugger
-        // expect(foo).gt(4)
         pushHook('AE 2')
       })
     })
     afterEach(function() {
       pushHook('AE 1')
-      // expect(false).ok
     })
     afterEach(function() {
       pushHook('AE 1 B')
@@ -76,66 +107,46 @@ describe.only('0', () => {
   })
   after(() => {
     pushHook('AA 0')
-    console.log('after', hooks)
-    const arr = [
-      'BE 1',
-      'BE 2',
-      'BE 2 B',
-      'T 2',
+    expect(hooks).deep.eq([
       'AE 2',
       'AE 1',
       'AE 1 B',
-      'AE 0'
-    ]
-    expect(hooks).eq([
-      "BE 0",
-      "BE 1",
-      "BE 0",
-      "BE 1",
-      "BE 2",
-      "BE 0",
-      "BE 1",
-      "BE 2",
-      "BE 2 B",
-      "BE 2 C",
-      "T 2",
-      "AE 2",
-      "AE 1",
-      "AE 1 B",
-      "AE 0",
-      "BE 0",
-      "BE 1",
-      "BE 2",
-      "BE 2 B",
-      "BE 2 C",
-      "T 2",
-      "AE 2",
-      "AE 1",
-      "AE 1 B",
-      "AE 0",
-      "AA 0"
+      'AE 0',
+      'BE 0',
+      'BE 1',
+      'BE 2',
+      'BE 2 B',
+      'BE 2 C',
+      'T 2 B',
+      'AE 2',
+      'AE 1',
+      'AE 1 B',
+      'AE 0',
+      'AA 0'
     ])
-    expect(hooks).deep.eq(repeat(arr, 3))
-    // expect('afterAll').not.ok
   })
 })
 
+describe('async', () => {
+  it('pass using done', function(done) {
+    Cypress.env('RETRIES', 4)
 
+    cy.on('fail', err => {
+      done()
+    })
+    expect(false).ok
+  })
+})
 
-describe('retry test', function() {
-  Cypress.env('RETRIES', 4)
-  // this.retries(3)
+describe('fail 10 times', function() {
+  this.retries(10)
   let foo = 0
   beforeEach(() => {
     foo++
     expect(foo).gt(2)
   })
-  it('will fail 3 times', function() {
-    expect(foo).gt(4)
-  })
-  it('will pass', () => {
-    expect(foo).gt(4)
+  it('test', function() {
+    expect(foo).gt(10)
+    expect(this._runnable.currentRetry()).eq(10)
   })
 })
-
-const repeat = (arr, i) => Array(i).fill(arr).reduce((a,b)=>a.concat(b))

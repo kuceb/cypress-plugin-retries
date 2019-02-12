@@ -1,10 +1,4 @@
-let _current
-let _chainerId
-
-const debug = function () {
-  console.log.apply(this, arguments)
-  // console.log(Cypress._.cloneDeep(window.state.hooks.slice(-1)[0]))
-}
+let logs = []
 
 const getDefaultRetries = () => {
   return Cypress.env('RETRIES')
@@ -12,16 +6,26 @@ const getDefaultRetries = () => {
 
 const _clone = Cypress.mocha._mocha.Mocha.Test.prototype.clone
 Cypress.mocha._mocha.Mocha.Test.prototype.clone = function() {
-  const ret = _clone.apply(this, arguments)
   if (this.trueFn) {
-    ret.fn = this.trueFn
-    // this.trueFn = null
+    this.fn = this.trueFn
   }
+  const ret = _clone.apply(this, arguments)
   ret.id = this.id
+  ret.err = null
   debug('clone test')
+  logs.forEach(log => {
+    log.set({
+      state: log.get().state + ' ignored' + ' retry-' + ret._currentRetry
+    })
+  })
+  logs = []
 
   return ret
 }
+
+Cypress.on('log:added', (attr, log) => {
+  logs.push(log)
+})
 
 const _onRunnableRun = Cypress.runner.onRunnableRun
 Cypress.runner.onRunnableRun = function(runnableRun, runnable, args) {
@@ -34,90 +38,65 @@ Cypress.runner.onRunnableRun = function(runnableRun, runnable, args) {
   const isBeforeHook = isHook && r.hookName.match(/before/)
   const test = r.ctx.currentTest || r
 
-  const logRetry = () => {
-    let shouldLog = true
-    test.ctx.hooksLogged = test.ctx.hooksLogged || {}
-
-    if (isHook) {
-      shouldLog = !test.ctx.hooksLogged[r.hookName]
-      test.ctx.hooksLogged[r.hookName] = true
-    }
-
-    let retryNum = test._currentRetry+1
-
-    if (shouldLog) {
-      // wrap this in a 'try' because a bug in cypress will throw if
-      // you call Cypres.log before any commands in a test
-      try{
-        Cypress.log({
-          name: `Retry ${retryNum}`,
-          type: 'parent',
-          message: '',
-          state: 'retry'
-        })
-      } catch(e){
-        console.log('ERROR')
-      }
+  if (test._currentRetry === 0 && logs.testId !== test.id) {
+    logs = []
+    logs.testId = test.id
   }
-  }
-
-  if (test._currentRetry > -1) {
-    logRetry()
-  }
-
 
   const next = args[0]
 
-
-
+  if (isAfterAllHook) {
+    test.err = null
+    if (test.state !== 'failed') {
+      test.state = 'passed'
+    }
+  }
 
   debug('on:', r.title)
 
-  if (r.ctx.currentTest && r.ctx.currentTest.trueFn && !isAfterAllHook) {
+  if (
+    isHook &&
+    r.ctx.currentTest &&
+    r.ctx.currentTest.trueFn &&
+    !isAfterAllHook
+  ) {
     debug('already failed, skipping this hook')
     return next.call(this)
   }
   debug('running')
 
-
-
   const onNext = function(err) {
-
     debug(runnable.title, 'onNext')
 
     const fail = function() {
       return next.call(this, err)
     }
-    const noFail = function () {
+    const noFail = function() {
+      test.err = null
       return next.call(this)
     }
 
     if (err) {
-  
       if (test._retries === -1) {
         test._retries = getDefaultRetries()
       }
 
       if (isBeforeHook && test._currentRetry < test._retries) {
         test.trueFn = test.fn
-        console.log('set fn from', test.fn)
         test.fn = function() {
           throw err
         }
         return noFail()
       }
     }
-
     return fail()
   }
   args[0] = onNext
 
-
-
   return _onRunnableRun.apply(this, [runnableRun, runnable, args])
 }
 
-addGlobalStyle(/*css*/`
+addGlobalStyle(/*css*/ `
 .command-state-retry {
   color: orange
 }
@@ -135,6 +114,45 @@ addGlobalStyle(/*css*/`
   line-height: 16px;
 }
 
+.command.ignored {
+  opacity: 0.3
+}
+.command.ignored:hover  {
+  opacity: 1
+}
+.command.ignored span .command-wrapper {
+  border-left: 4px solid orange
+}
+.command.ignored .command-number span{
+  display: none;
+}
+
+.command.ignored .command-number:before {
+  font: normal normal normal 12px/1 FontAwesome;
+  content: " ";
+  color: orange;
+}
+/* .command.ignored.retry-0 .command-number:before {
+  content: "";
+}
+.command.ignored.retry-1 .command-number:before {
+  content: "2";
+}
+.command.ignored.retry-2 .command-number:before {
+  content: "3";
+} */
+
+/* .command.ignored.retry-1 {
+  opacity: 0.2
+}
+.command.ignored.retry-2 {
+  opacity: 0.3
+} */
+
+.runnable-passed .test-error {
+  display:none
+}
+
 
 `)
 
@@ -148,4 +166,8 @@ function addGlobalStyle(css) {
   style.type = 'text/css'
   style.innerHTML = css
   head.appendChild(style)
+}
+
+const debug = function() {
+  // console.log.apply(this, arguments)
 }
