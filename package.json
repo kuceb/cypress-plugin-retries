@@ -4,6 +4,7 @@
   "description": "Cypress plugin allowing tests to retry a configurable amount of times",
   "main": "src",
   "scripts": {
+    "test-e2e": "node test.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

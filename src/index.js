@@ -1,3 +1,4 @@
+const _ = Cypress._
 let logs = []
 
 const getDefaultRetries = () => {
@@ -46,8 +47,8 @@ Cypress.runner.onRunnableRun = function(runnableRun, runnable, args) {
   const next = args[0]
 
   if (isAfterAllHook) {
-    test.err = null
     if (test.state !== 'failed') {
+      test.err = null
       test.state = 'passed'
     }
   }
@@ -95,6 +96,12 @@ Cypress.runner.onRunnableRun = function(runnableRun, runnable, args) {
 
   return _onRunnableRun.apply(this, [runnableRun, runnable, args])
 }
+
+const pluginError = (message) => {throw new Error(`[cypress-plugin-retries]: ${message}`)}
+
+// Cypress.Commands.add('retries', (n) => {
+ 
+// })
 
 addGlobalStyle(/*css*/ `
 .command-state-retry {
@@ -171,3 +178,16 @@ function addGlobalStyle(css) {
 const debug = function() {
   // console.log.apply(this, arguments)
 }
+
+Object.defineProperty(Cypress, 'currentTest', {
+  get: function(){
+    const r = cy.state('runnable')
+    if (!r) {
+      const err = new Error()
+      err.message = 'Cypress.currentTest cannot be accessed outside a test or hook (it, before, after, beforeEach, afterEach)'
+      throw err
+    }
+    return r && r.ctx.currentTest || r
+  }
+})
+
