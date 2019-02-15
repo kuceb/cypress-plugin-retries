@@ -33,20 +33,20 @@ require('cypress-plugin-retries')
 
 ### Usage
 
-**[Preferred]** On a per-test or per-hook basis, set the retry number:
-> Note: this plugin **adds Cypress.currentTest** and you should access it in the context of this plugin.
-```js
-it('test', ()=>{
-    Cypress.currentTest.retries(2)
-})
-```
-**or** Use the environment variable `CYPRESS_RETRIES` to set the retry number for **all spec files**:
+Use the environment variable `CYPRESS_RETRIES` to set the retry number for **all spec files**:
 ```bash
 CYPRESS_RETRIES=2 npm run cypress
 ```
 **or** Use `Cypress.env('RETRIES')` in your spec file to set the retry number for **all tests**:
 ```js
 Cypress.env('RETRIES', 2)
+```
+**or** On a per-test or per-hook basis, set the retry number:
+> Note: this plugin **adds Cypress.currentTest** and you should access it in the context of this plugin.
+```js
+it('test', ()=>{
+    Cypress.currentTest.retries(2)
+})
 ```
 **or [undersirable]** Use `mocha`'s `this.retries(n)` inside of a test:
 > Note: **must use `function()` notation, not arrows `()=>{}`**
