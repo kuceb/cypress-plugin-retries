@@ -42,7 +42,7 @@ CYPRESS_RETRIES=2 npm run cypress
 Cypress.env('RETRIES', 2)
 ```
 **or** On a per-test or per-hook basis, set the retry number:
-> Note: this plugin **adds Cypress.currentTest** and you should access it in the context of this plugin.
+> Note: this plugin **adds Cypress.currentTest** and you should only access it in the context of this plugin.
 ```js
 it('test', ()=>{
     Cypress.currentTest.retries(2)
