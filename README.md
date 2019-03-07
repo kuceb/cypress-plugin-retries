@@ -62,7 +62,7 @@ it('test', function() {
 - `beforeAll(before)` hooks are not re-ran on retry. These are guaranteeed only to be ran once.
 - if a test fails in a `beforeEach` hook, the test will retry
 - if a test fails in a `afterEach`/`afterAll` hook, the test will not retry, but fail as normal
-- only the final run of a test will be sent to the mocha reporter/Dashboard. his means if a test passes on the second retry, you'll see one passing test.
+- only the final run of a test will be sent to the mocha reporter/Dashboard. This means if a test passes on the second retry, you'll see one passing test.
 - a screenshot is taken on each test retry. This can be configured as detailed here: https://docs.cypress.io/api/commands/screenshot.html#Test-Failures 
 - commands from past test tries will be faded out, as shown in the screenshot above
 
