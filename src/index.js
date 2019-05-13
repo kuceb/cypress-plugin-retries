@@ -180,7 +180,7 @@ const debug = function() {
 }
 
 Object.defineProperty(Cypress, 'currentTest', {
-  configurable: false,
+  configurable: true,
   get: function(){
     const r = cy.state('runnable')
     if (!r) {
