@@ -1,6 +1,6 @@
 {
   "name": "cypress-plugin-retries",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Cypress plugin allowing tests to retry a configurable amount of times",
   "main": "src",
   "scripts": {
