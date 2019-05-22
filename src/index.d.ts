@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-	namespace Cypress {
+	declare namespace Cypress {
 			interface Cypress {
 					/**
 					 * Gets the current test. Added by cypress-plugin-retries
