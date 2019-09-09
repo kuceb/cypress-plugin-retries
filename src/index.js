@@ -36,7 +36,7 @@ Cypress.runner.onRunnableRun = function(runnableRun, runnable, args) {
   const isHook = r.type === 'hook'
   const isAfterHook = isHook && r.hookName.match(/after/)
   const isAfterAllHook = isHook && r.hookName.match(/after all/)
-  const isBeforeHook = isHook && r.hookName.match(/before/)
+  const isBeforeHook = isHook && r.hookName.match(/before each/)
   const test = r.ctx.currentTest || r
 
   if (test._currentRetry === 0 && logs.testId !== test.id) {
