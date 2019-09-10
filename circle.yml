@@ -1,0 +1,32 @@
+version: 2.1
+jobs:
+  test:
+    docker:
+    - image: cypress/base:10
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - cache-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
+    - run:
+        name: Yarn install
+        command: yarn install --frozen-lockfile
+    - save_cache:
+        key: cache-{{ arch }}-{{ .Branch }}-{{ checksum "package.json" }}
+        paths:
+        - ~/.cache
+    - run:
+        command: yarn lint
+    - run:
+        command: yarn test
+    - run:
+        command: yarn run semantic-release
+workflows:
+  build:
+    jobs:
+    - test
+  version: 2
+
+# Semantic-release bot needs env vars:
+#   GH_TOKEN: repo, read:org, write:repo_hook, user:email
+#   NPM_TOKEN: read/release

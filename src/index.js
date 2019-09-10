@@ -1,4 +1,3 @@
-const _ = Cypress._
 let logs = []
 
 const getDefaultRetries = () => {
@@ -6,19 +5,23 @@ const getDefaultRetries = () => {
 }
 
 const _clone = Cypress.mocha._mocha.Mocha.Test.prototype.clone
-Cypress.mocha._mocha.Mocha.Test.prototype.clone = function() {
+
+Cypress.mocha._mocha.Mocha.Test.prototype.clone = function () {
   if (this.trueFn) {
     this.fn = this.trueFn
   }
+
   const ret = _clone.apply(this, arguments)
+
   ret.id = this.id
   ret.err = null
   debug('clone test')
-  logs.forEach(log => {
+  logs.forEach((log) => {
     log.set({
-      state: log.get().state + ' ignored' + ' retry-' + ret._currentRetry
+      state: `${log.get().state} ignored retry-${ret._currentRetry}`,
     })
   })
+
   logs = []
 
   return ret
@@ -29,12 +32,12 @@ Cypress.on('log:added', (attr, log) => {
 })
 
 const _onRunnableRun = Cypress.runner.onRunnableRun
-Cypress.runner.onRunnableRun = function(runnableRun, runnable, args) {
+
+Cypress.runner.onRunnableRun = function (runnableRun, runnable, args) {
   debug('_onRunnableRun')
 
   const r = runnable
   const isHook = r.type === 'hook'
-  const isAfterHook = isHook && r.hookName.match(/after/)
   const isAfterAllHook = isHook && r.hookName.match(/after all/)
   const isBeforeHook = isHook && r.hookName.match(/before each/)
   const test = r.ctx.currentTest || r
@@ -62,18 +65,21 @@ Cypress.runner.onRunnableRun = function(runnableRun, runnable, args) {
     !isAfterAllHook
   ) {
     debug('already failed, skipping this hook')
+
     return next.call(this)
   }
+
   debug('running')
 
-  const onNext = function(err) {
+  const onNext = function (err) {
     debug(runnable.title, 'onNext')
 
-    const fail = function() {
+    const fail = function () {
       return next.call(this, err)
     }
-    const noFail = function() {
+    const noFail = function () {
       test.err = null
+
       return next.call(this)
     }
 
@@ -84,24 +90,25 @@ Cypress.runner.onRunnableRun = function(runnableRun, runnable, args) {
 
       if (isBeforeHook && test._currentRetry < test._retries) {
         test.trueFn = test.fn
-        test.fn = function() {
+        test.fn = function () {
           throw err
         }
+
         return noFail()
       }
     }
+
     return fail()
   }
+
   args[0] = onNext
 
   return _onRunnableRun.apply(this, [runnableRun, runnable, args])
 }
 
-const pluginError = (message) => {throw new Error(`[cypress-plugin-retries]: ${message}`)}
-
-// Cypress.Commands.add('retries', (n) => {
- 
-// })
+// const pluginError = (message) => {
+//   throw new Error(`[cypress-plugin-retries]: ${message}`)
+// }
 
 addGlobalStyle(/*css*/ `
 .command-state-retry {
@@ -163,32 +170,36 @@ addGlobalStyle(/*css*/ `
 
 `)
 
-function addGlobalStyle(css) {
-  var head, style
+function addGlobalStyle (css) {
+  let head; let style
+
   head = window.top.document.getElementsByTagName('head')[0]
   if (!head) {
     return
   }
+
   style = window.top.document.createElement('style')
   style.type = 'text/css'
   style.innerHTML = css
   head.appendChild(style)
 }
 
-const debug = function() {
+const debug = function () {
   // console.log.apply(this, arguments)
 }
 
 Object.defineProperty(Cypress, 'currentTest', {
   configurable: true,
-  get: function(){
+  get () {
     const r = cy.state('runnable')
+
     if (!r) {
       const err = new Error()
+
       err.message = 'Cypress.currentTest cannot be accessed outside a test or hook (it, before, after, beforeEach, afterEach)'
       throw err
     }
-    return r && r.ctx.currentTest || r
-  }
-})
 
+    return r && r.ctx.currentTest || r
+  },
+})
