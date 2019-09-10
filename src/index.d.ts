@@ -8,4 +8,3 @@
 					currentTest: Mocha.ISuiteCallbackContext
 			}
 	}
-

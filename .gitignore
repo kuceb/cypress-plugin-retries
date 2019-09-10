@@ -4,4 +4,3 @@ cypress/videos
 cypress/screenshots
 *.xml
 *.iml
-yarn.lock
