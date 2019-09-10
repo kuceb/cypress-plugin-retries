@@ -28,5 +28,5 @@ workflows:
   version: 2
 
 # Semantic-release bot needs env vars:
-#   GH_TOKEN: read:org, repo, user:email, write:repo_hook
+#   GH_TOKEN: repo, read:org, write:repo_hook, user:email
 #   NPM_TOKEN: read/release
