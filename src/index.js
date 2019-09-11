@@ -4,6 +4,14 @@ const getDefaultRetries = () => {
   return Cypress.env('RETRIES')
 }
 
+const getRetriesHidden = () => {
+  return Cypress.env('RETRIES_HIDDEN')
+}
+
+const debug = function () {
+  // console.log.apply(this, arguments)
+}
+
 const _clone = Cypress.mocha._mocha.Mocha.Test.prototype.clone
 
 Cypress.mocha._mocha.Mocha.Test.prototype.clone = function () {
@@ -39,7 +47,7 @@ Cypress.runner.onRunnableRun = function (runnableRun, runnable, args) {
   const r = runnable
   const isHook = r.type === 'hook'
   const isAfterAllHook = isHook && r.hookName.match(/after all/)
-  const isBeforeHook = isHook && r.hookName.match(/before/)
+  const isBeforeHook = isHook && r.hookName.match(/before each/)
   const test = r.ctx.currentTest || r
 
   if (test._currentRetry === 0 && logs.testId !== test.id) {
@@ -48,13 +56,6 @@ Cypress.runner.onRunnableRun = function (runnableRun, runnable, args) {
   }
 
   const next = args[0]
-
-  if (isAfterAllHook) {
-    if (test.state !== 'failed') {
-      test.err = null
-      test.state = 'passed'
-    }
-  }
 
   debug('on:', r.title)
 
@@ -129,7 +130,8 @@ addGlobalStyle(/*css*/ `
 }
 
 .command.ignored {
-  opacity: 0.3
+  opacity: 0.3;
+  ${getRetriesHidden() ? 'display: none' : ''}
 }
 .command.ignored:hover  {
   opacity: 1
@@ -182,10 +184,6 @@ function addGlobalStyle (css) {
   style.type = 'text/css'
   style.innerHTML = css
   head.appendChild(style)
-}
-
-const debug = function () {
-  // console.log.apply(this, arguments)
 }
 
 Object.defineProperty(Cypress, 'currentTest', {
