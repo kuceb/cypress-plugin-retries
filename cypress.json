@@ -1,3 +1,4 @@
 {
-  "projectId": "3e57fb"
+  "projectId": "3e57fb",
+  "integrationFolder": "cypress/tests"
 }

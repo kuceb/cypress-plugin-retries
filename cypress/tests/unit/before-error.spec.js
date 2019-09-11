@@ -52,6 +52,10 @@ describe('Exception in before block', () => {
     it('shouldn\'t run this test', () => {
       throwMetaError('should not have ran')
     })
+
+    it(`also shouldn't run this`, () => {
+      throwMetaError('should not have ran 2')
+    })
   })
 
   describe('Working case', () => {
