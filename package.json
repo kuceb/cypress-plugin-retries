@@ -5,7 +5,8 @@
   "main": "src",
   "scripts": {
     "lint": "eslint --ext json,js,ts .",
-    "test": "cypress run"
+    "test": "cypress run --spec '**/unit/**",
+    "test-e2e": "mocha test/e2e"
   },
   "husky": {
     "hooks": {

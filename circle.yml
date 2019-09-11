@@ -20,6 +20,8 @@ jobs:
     - run:
         command: yarn test
     - run:
+        command: yarn test-e2e
+    - run:
         command: yarn run semantic-release
 workflows:
   build:
