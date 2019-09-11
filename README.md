@@ -67,5 +67,8 @@ it('test', function() {
 - a screenshot is taken on each test retry. This can be configured as detailed here: https://docs.cypress.io/api/commands/screenshot.html#Test-Failures 
 - commands from past test tries will be faded out, as shown in the screenshot above
 
+### Extra Configuration
+- Use env var `RETRIES_HIDDEN=1` to hide previous attempts' command log entries (instead of marking them with an orange `x`)
+
 ### License
 [MIT](LICENSE)
