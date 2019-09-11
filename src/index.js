@@ -107,14 +107,6 @@ Cypress.runner.onRunnableRun = function (runnableRun, runnable, args) {
   return _onRunnableRun.apply(this, [runnableRun, runnable, args])
 }
 
-Cypress.on('test:after:run', (test) => {
-  if (!test.state) {
-    debug('after:run no state')
-    test.state = 'failed'
-    // Cypress.action('runner:test:after:run', test, test)
-  }
-})
-
 // const pluginError = (message) => {
 //   throw new Error(`[cypress-plugin-retries]: ${message}`)
 // }

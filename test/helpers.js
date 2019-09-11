@@ -39,31 +39,51 @@ beforeEach(function () {
   this.currentTest.timeout(50000)
 })
 
-exports.runTest = (options = {}) => {
+exports.runTest = async (options = {}) => {
   if (!options.spec) {
     throw new Error('options.spec not supplied')
   }
 
+  let parsedExpectedResults = {}
+
+  if (!_.isArray(options.spec)) {
+    const fileStr = (await fs.readFile(options.spec)).toString()
+    const match = /EXPECT.{0,3}:.{0,3}({[\s\S]*?})/.exec(fileStr)
+
+    if (match) {
+      parsedExpectedResults = require('json5').parse(match[1])
+    }
+  }
+
   const opts = _.defaults(options, {
-    statusCode: 0,
     snapshot: false,
     spec: '',
+    expectedResults: {},
   })
 
+  const expectedResults = _.defaults({}, parsedExpectedResults, opts.expectedResults, {
+    totalFailed: 0,
+  })
+
+  console.log(chalk.cyanBright(`starting test run: ${opts.spec}`))
+
   const stdio = captureStdio(process.stdout)
+
+  stdio.passThrough((v) => chalk.magenta(stripAnsi(v.toString())))
   // const stdio2 = captureStdio(process.stdout)
 
   return cypress.run({
     spec: opts.spec,
   }).then((res) => {
-    expect(res.totalFailed).eq(opts.statusCode)
-
+    expect(res).includes(expectedResults)
   })
   .finally(() => {
     stdio.restore()
-    console.log(chalk.magenta(stdio.toString()))
+    // console.log(chalk.magenta(stdio.toString()))
   })
-
+  .then(() => {
+    console.log(`${chalk.bold('run matched these results:')} ${JSON.stringify(expectedResults, null, 2)}`)
+  })
 }
 
 const mapError = async (e) => {
@@ -173,17 +193,26 @@ const getCodeFrame = async (info) => {
 
 const captureStdio = (stdio, tty) => {
   let logs = []
+  let passThrough = null
 
   const write = stdio.write
   const isTTY = stdio.isTTY
 
   stdio.write = function (str) {
     logs.push(str)
+    if (passThrough) {
+      return write.apply(this, [passThrough(str)])
+    }
   }
 
   if (tty !== undefined) stdio.isTTY = tty
 
   return {
+
+    passThrough (fn) {
+      passThrough = fn
+    },
+
     data: logs,
 
     reset: () => (logs = []),
