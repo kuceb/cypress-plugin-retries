@@ -48,7 +48,7 @@ it('test', () => {
     Cypress.currentTest.retries(2)
 })
 ```
-**or [undersirable]** Use `mocha`'s `this.retries(n)` inside of a test:
+**or [undesirable]** Use `mocha`'s `this.retries(n)` inside of a test:
 > Note: **must use `function()` notation, not arrows `()=>{}`**
 ```js
 it('test', function() {
