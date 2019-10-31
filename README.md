@@ -16,7 +16,6 @@
 > [Please refer to this issue for updates about official cypress retry support](https://github.com/cypress-io/cypress/issues/1313)
 
 ![](docs/readme-screenshot.png)
-![](2019-02-12-13-29-53.png)
 
 ### Installation
 

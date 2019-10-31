@@ -158,6 +158,8 @@ describe('deeply nested', () => {
       'AE 0',
       'AA 0',
     ])
+
+    expect(cy.$$('.runnable-title:contains(T 2)', top.document).parent().children('i').length).eq(5)
   })
 })
 

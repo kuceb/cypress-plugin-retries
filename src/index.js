@@ -1,5 +1,7 @@
 let logs = []
 
+const { $ } = Cypress
+
 const getDefaultRetries = () => {
   return Cypress.env('RETRIES')
 }
@@ -11,6 +13,8 @@ const getRetriesHidden = () => {
 const debug = function () {
   // console.log.apply(this, arguments)
 }
+
+const _top = top
 
 const _clone = Cypress.mocha._mocha.Mocha.Test.prototype.clone
 
@@ -29,6 +33,18 @@ Cypress.mocha._mocha.Mocha.Test.prototype.clone = function () {
       state: `${log.get().state} ignored retry-${ret._currentRetry}`,
     })
   })
+
+  setTimeout(() => {
+
+    const a = $('.runnable-active', _top.document).find('.runnable-state')
+
+    if (!$(`.runnable-active .retry-icon.retry-${ret._currentRetry}`, _top.document).length) {
+
+      const b = $(`<i class="retry-icon retry retry-${ret._currentRetry} fa fa-x" />`, _top.document)
+
+      b.prependTo(a.parent())
+    }
+  }, 0)
 
   logs = []
 
@@ -143,10 +159,23 @@ addGlobalStyle(/*css*/ `
   display: none;
 }
 
-.command.ignored .command-number:before {
+.command.ignored .command-number:before, .retry-icon:before {
   font: normal normal normal 12px/1 FontAwesome;
   content: " ";
   color: orange;
+}
+
+.runnable-failed .retry-icon {
+  display:none
+}
+
+.retry-icon {
+    display: inline-block;
+    line-height: 18px;
+    margin-right: 3px;
+    /* min-width: 6px; */
+    height: 18px;
+    text-align: center;
 }
 /* .command.ignored.retry-0 .command-number:before {
   content: "";
@@ -175,12 +204,15 @@ addGlobalStyle(/*css*/ `
 function addGlobalStyle (css) {
   let head; let style
 
+  $('#__plugin_retries_style__', _top.document).remove()
+
   head = window.top.document.getElementsByTagName('head')[0]
   if (!head) {
     return
   }
 
   style = window.top.document.createElement('style')
+  style.id = '__plugin_retries_style__'
   style.type = 'text/css'
   style.innerHTML = css
   head.appendChild(style)
