@@ -4,3 +4,4 @@ cypress/videos
 cypress/screenshots
 *.xml
 *.iml
+package-lock.json
