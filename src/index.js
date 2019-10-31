@@ -165,6 +165,10 @@ addGlobalStyle(/*css*/ `
   color: orange;
 }
 
+.runnable-failed .retry-icon {
+  display:none
+}
+
 .retry-icon {
     display: inline-block;
     line-height: 18px;
@@ -200,9 +204,7 @@ addGlobalStyle(/*css*/ `
 function addGlobalStyle (css) {
   let head; let style
 
-  if ($('#__plugin_retries_style__', _top.document).length) {
-    return
-  }
+  $('#__plugin_retries_style__', _top.document).remove()
 
   head = window.top.document.getElementsByTagName('head')[0]
   if (!head) {
