@@ -55,6 +55,10 @@ it('test', function() {
 })
 ```
 
+### FAQ
+Conditional Logic based on currentRetry number?
+https://github.com/Bkucera/cypress-plugin-retries/issues/32
+
 ### How it works
 - a test with retries enabled will immediately retry on failure instead of moving on to the next test.
 - tests only retry on failure. If all your tests pass on the first try, it's as if you didn't have this plugin.
