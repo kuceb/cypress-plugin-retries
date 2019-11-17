@@ -36,11 +36,7 @@ Use the environment variable `CYPRESS_RETRIES` to set the retry number for **all
 ```bash
 CYPRESS_RETRIES=2 npm run cypress
 ```
-**or** Use `Cypress.env('RETRIES')` in your spec file to set the retry number for **all tests**:
-```js
-Cypress.env('RETRIES', 2)
-```
-**or** Set the `"env"` key in your `cypress.json` configuration file to set the retry number for **all tests**: 
+**or** Set the `"env"` key in your `cypress.json` configuration file to set the retry number for **all spec files**: 
 ```json
 {
   "env":
