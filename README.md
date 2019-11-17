@@ -40,6 +40,15 @@ CYPRESS_RETRIES=2 npm run cypress
 ```js
 Cypress.env('RETRIES', 2)
 ```
+**or** Set the `"env"` key in your `cypress.json` configuration file to set the retry number for **all tests**: 
+```json
+{
+  "env":
+  {
+    "retries": 2
+  }
+}
+```
 **or** On a per-test or per-hook basis, set the retry number:
 > Note: this plugin **adds Cypress.currentTest** and you should only access it in the context of this plugin.
 ```js
