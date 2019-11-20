@@ -41,7 +41,7 @@ CYPRESS_RETRIES=2 npm run cypress
 {
   "env":
   {
-    "retries": 2
+    "RETRIES": 2
   }
 }
 ```
