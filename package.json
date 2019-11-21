@@ -2,7 +2,7 @@
   "name": "cypress-plugin-retries",
   "version": "1.2.2",
   "description": "Cypress plugin allowing tests to retry a configurable amount of times",
-  "main": "src",
+  "main": "lib/support",
   "scripts": {
     "lint": "eslint --ext json,js,ts .",
     "test": "cypress run --spec '**/unit/**'",
@@ -13,16 +13,19 @@
       "pre-commit": "lint-staged"
     }
   },
+  "dependencies": {
+    "chalk": "^3.0.0"
+  },
   "devDependencies": {
     "@babel/code-frame": "^7.5.5",
     "@cypress/eslint-plugin-dev": "^4.0.0",
+    "@types/chalk": "^2.2.0",
     "@types/fs-extra": "^8.0.0",
     "@types/lodash": "^4.14.138",
     "@typescript-eslint/eslint-plugin": "^2.2.0",
     "@typescript-eslint/parser": "^2.2.0",
     "bluebird": "^3.5.5",
     "chai": "^4.2.0",
-    "chalk": "^2.4.2",
     "cypress": "^3.4.1",
     "debug": "^4.1.1",
     "eslint": "^5.16.0",

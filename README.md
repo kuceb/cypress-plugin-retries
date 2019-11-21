@@ -19,15 +19,26 @@
 
 ### Installation
 
-Add the plugin to `devDependencies`
+#### Add the plugin to `devDependencies`
 ```bash
 npm install -D cypress-plugin-retries
 ```
 
-At the top of **`cypress/support/index.js`**:
+#### At the top of **`cypress/support/index.js`**:
 ```js
 require('cypress-plugin-retries')
 ```
+
+#### (Optional) enable retry logging in the terminal alongside mocha output
+  inside **cypress/plugins/index.js**:
+```js
+module.exports = (on, config) => {
+  require('cypress-plugin-retries/lib/plugin')(on)
+}
+```
+
+
+
 
 
 ### Usage
