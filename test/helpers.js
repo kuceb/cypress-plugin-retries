@@ -6,7 +6,7 @@ const path = require('path')
 const { expect } = require('chai')
 const bluebird = require('bluebird')
 const Debug = require('debug')
-const chalk = require('chalk').default
+const chalk = require('chalk')
 const stripAnsi = require('strip-ansi')
 const cypress = require('cypress')
 
