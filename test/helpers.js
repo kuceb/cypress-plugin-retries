@@ -59,7 +59,12 @@ exports.runTest = async (options = {}) => {
     snapshot: false,
     spec: '',
     expectedResults: {},
+    expectedStdout: null,
   })
+
+  _.extend(opts, _.pick(parsedExpectedResults, _.keys(opts)))
+
+  parsedExpectedResults = _.omit(parsedExpectedResults, _.keys(opts))
 
   const expectedResults = _.defaults({}, parsedExpectedResults, opts.expectedResults, {
     totalFailed: 0,
@@ -72,16 +77,27 @@ exports.runTest = async (options = {}) => {
   stdio.passThrough((v) => chalk.magenta(stripAnsi(v.toString())))
   // const stdio2 = captureStdio(process.stdout)
 
+  let stdout
+
   return cypress.run({
     spec: opts.spec,
   }).then((res) => {
     expect(res).includes(expectedResults)
   })
   .finally(() => {
-    stdio.restore()
     // console.log(chalk.magenta(stdio.toString()))
+    stdout = stdio.toString()
+    stdio.restore()
   })
   .then(() => {
+    if (opts.expectedStdout) {
+      _.forEach(opts.expectedStdout, (v) => {
+        expect(stdout).include(v)
+        console.log(`${chalk.bold('run matched stdout:')}\n${v}`)
+      })
+    }
+
+    // console.log(stdout)
     console.log(`${chalk.bold('run matched these results:')} ${JSON.stringify(expectedResults, null, 2)}`)
   })
 }

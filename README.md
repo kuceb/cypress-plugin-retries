@@ -38,7 +38,7 @@ module.exports = (on, config) => {
 }
 ```
 example output:  
-  ![](2019-11-21-16-22-16.png)
+  ![](/docs/terminal_log.png)
 
 
 
@@ -92,6 +92,7 @@ https://github.com/Bkucera/cypress-plugin-retries/issues/32
 
 ### Extra Configuration
 - Use env var `RETRIES_HIDDEN=1` to hide previous attempts' command log entries (instead of marking them with an orange `x`)
+- Use env var `RETRIES_NO_LOG=1` to omit logging to terminal in Cypress run mode (`(retry 1/3) ...`)
 
 ### License
 [MIT](LICENSE)
