@@ -29,6 +29,21 @@ At the top of **`cypress/support/index.js`**:
 require('cypress-plugin-retries')
 ```
 
+#### Optional Installation
+To enable retry logging in the terminal alongside mocha output  
+Inside **cypress/plugins/index.js**:
+```js
+module.exports = (on, config) => {
+  require('cypress-plugin-retries/lib/plugin')(on)
+}
+```
+example output:  
+  ![](/docs/terminal_log.png)
+
+
+
+
+
 
 ### Usage
 
@@ -77,6 +92,7 @@ https://github.com/Bkucera/cypress-plugin-retries/issues/32
 
 ### Extra Configuration
 - Use env var `RETRIES_HIDDEN=1` to hide previous attempts' command log entries (instead of marking them with an orange `x`)
+- Use env var `RETRIES_NO_LOG=1` to omit logging to terminal in Cypress run mode (`(retry 1/3) ...`)
 
 ### License
 [MIT](LICENSE)
