@@ -3,6 +3,7 @@
   "version": "1.2.2",
   "description": "Cypress plugin allowing tests to retry a configurable amount of times",
   "main": "lib/support",
+  "types": "lib/index.d.ts",
   "scripts": {
     "lint": "eslint --ext json,js,ts .",
     "test": "cypress run --spec '**/unit/**'",
