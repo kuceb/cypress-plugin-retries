@@ -5,6 +5,8 @@
 					/**
 					 * Gets the current test. Added by cypress-plugin-retries
 					 */
-					currentTest: Mocha.ISuiteCallbackContext
+					currentTest: Mocha.ISuiteCallbackContext & {
+							currentRetry: () => number
+					}
 			}
 	}
