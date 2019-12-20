@@ -1,0 +1,48 @@
+name: Node CI
+
+on: [push]
+
+jobs: 
+  lint:
+    runs-on: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+    - name: install
+      run: |
+        yarn install --frozen-lockfile
+        yarn lint
+
+  test:
+    runs-on: [ubuntu-latest]
+    strategy:
+      matrix:
+        cypress-version: ["current", 3.4.1]
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+    - name: install
+      run: |
+        yarn install --frozen-lockfile
+        [[ ${{ matrix.cypress-version }} == 'current' ]] || yarn add -D cypress@${{ matrix.cypress-version }}
+        yarn test
+        yarn test-e2e
+      env:
+        CI: true
+  deploy:
+    runs-on: [ubuntu-latest]
+    needs: [test, lint]
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+    - name: install
+      run: |
+        yarn install --frozen-lockfile
+        yarn semantic-release
+     
