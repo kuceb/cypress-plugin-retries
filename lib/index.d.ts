@@ -5,8 +5,6 @@
 					/**
 					 * Gets the current test. Added by cypress-plugin-retries
 					 */
-					currentTest: Mocha.Test & {
-							currentRetry: () => number
-					}
+					currentTest: Mocha.Test
 			}
 	}
