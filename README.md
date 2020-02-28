@@ -78,6 +78,8 @@ it('test', function() {
 ### FAQ
 Conditional Logic based on currentRetry number?
 https://github.com/Bkucera/cypress-plugin-retries/issues/32
+add a wait before the next retry?
+https://github.com/Bkucera/cypress-plugin-retries/issues/52
 
 ### How it works
 - a test with retries enabled will immediately retry on failure instead of moving on to the next test.
