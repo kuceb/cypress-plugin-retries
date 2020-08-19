@@ -1,4 +1,5 @@
 
+> [Test retries has made it to Cypress core! Please upgrade to 5.0.0 and remove this plugin](https://github.com/cypress-io/cypress/issues/1313)
 
 <div align="center">
     <img src="docs/readme-logo.png">
@@ -13,7 +14,7 @@
 
 > **Please report bugs in the issues of this repo.**
 
-> [Please refer to this issue for updates about official cypress retry support](https://github.com/cypress-io/cypress/issues/1313)
+> [Test retries has made it to Cypress core! Please upgrade to 5.0.0 and remove this plugin](https://github.com/cypress-io/cypress/issues/1313)
 
 ![](docs/readme-screenshot.png)
 
