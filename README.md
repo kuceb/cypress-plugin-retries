@@ -3,7 +3,7 @@
 
 #### Migrating from cypress-plugin-retries to Cypress 5.0.0:
 
-- remove plugin-retries `devDependencies` and plugin-retries code in support files
+- remove cypress-plugin-retries from `devDependencies` and related code in support/plugin files
 - remove usage of `Cypress.currentTest` in favor of test config overrides `it('test title', { retries: 2 }, () => {...})`
 - remove usage of `this.retries(n)` (not supported)
 - Use `Cypress.config('retries')` instead of `Cypress.env('RETRIES')` (or see `cypress.json` instructions above
