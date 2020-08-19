@@ -6,7 +6,7 @@
 - remove cypress-plugin-retries from `devDependencies` and related code in support/plugin files
 - remove usage of `Cypress.currentTest` in favor of test config overrides `it('test title', { retries: 2 }, () => {...})`
 - remove usage of `this.retries(n)` (not supported)
-- Set retries in `cypress.json` instead of using `Cypress.env('RETRIES')` (e.g. `{ "retries": { "openMode": 0, "runMode": 2 } }`)
+- Set `retries` in `cypress.json` instead of using `Cypress.env('RETRIES')` (e.g. `{ "retries": { "openMode": 0, "runMode": 2 } }`)
 
 
 <div align="center">
