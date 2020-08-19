@@ -22,8 +22,6 @@
 
 > **Please report bugs in the issues of this repo.**
 
-> [Test retries has made it to Cypress core! Please upgrade to 5.0.0 and remove this plugin](https://github.com/cypress-io/cypress/issues/1313)
-
 ![](docs/readme-screenshot.png)
 
 ### Installation
