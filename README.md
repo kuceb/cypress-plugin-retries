@@ -1,7 +1,7 @@
 
 > [Test retries has made it to Cypress core! Please upgrade to 5.0.0 and remove this plugin](https://github.com/cypress-io/cypress/issues/1313)
 
-#### Migrating from cypress-plugin-retries plugin to Cypress 5.0.0:
+#### Migrating from cypress-plugin-retries to Cypress 5.0.0:
 
 - remove plugin-retries `devDependencies` and plugin-retries code in support files
 - remove usage of `Cypress.currentTest` in favor of test config overrides `it('test title', { retries: 2 }, () => {...})`
