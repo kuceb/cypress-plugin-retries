@@ -1,13 +1,29 @@
-
+### Update:
 > [Test retries has made it to Cypress core! Please upgrade to 5.0.0 and remove this plugin](https://github.com/cypress-io/cypress/issues/1313)
-
 #### Migrating from cypress-plugin-retries to Cypress 5.0.0:
 
 - remove cypress-plugin-retries from `devDependencies` and related code in support/plugin files
-- remove usage of `Cypress.currentTest` in favor of test config overrides `it('test title', { retries: 2 }, () => {...})`
-- remove usage of `this.retries(n)` (not supported)
-- Set `retries` in `cypress.json` instead of using `Cypress.env('RETRIES')` (e.g. `{ "retries": { "openMode": 0, "runMode": 2 } }`)
+- To enable retries on single test/suite, remove usage of `Cypress.currentTest` in favor of test config overrides e.g.:
+```js
+// on a single test
+it('test title', { retries: 2 }, () => {
+  ...
+})
 
+// or on a suite
+describe('suite title', { retries: 2 }, () => {
+  ...
+}) 
+```
+- To enable retries globally, set `retries` in `cypress.json` instead of using `Cypress.env('RETRIES')` e.g.:
+```js
+{ 
+  "retries": { "openMode": 0, "runMode": 2 }
+}
+```
+- remove usage of `this.retries(n)` (not supported)
+
+-----
 
 <div align="center">
     <img src="docs/readme-logo.png">
