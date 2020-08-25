@@ -1,6 +1,9 @@
 ### Update:
 > [Test retries has made it to Cypress core! Please upgrade to 5.0.0 and remove this plugin](https://github.com/cypress-io/cypress/issues/1313)
+
 #### Migrating from cypress-plugin-retries to Cypress 5.0.0:
+
+[See the 5.0 migration guide](https://docs.cypress.io/guides/references/migration-guide.html#Migrating-to-Cypress-5-0)
 
 - remove cypress-plugin-retries from `devDependencies` and related code in support/plugin files
 - To enable retries on single test/suite, remove usage of `Cypress.currentTest` in favor of test config overrides e.g.:
