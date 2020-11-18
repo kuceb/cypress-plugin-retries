@@ -40,7 +40,7 @@
     "lint-staged": "^9.2.5",
     "lodash": "^4.17.15",
     "mocha": "^6.2.0",
-    "semantic-release": "^15.13.24",
+    "semantic-release": "^17.2.3",
     "strip-ansi": "^5.2.0",
     "typescript": "^3.6.2"
   },
